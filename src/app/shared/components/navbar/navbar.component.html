@@ -1,7 +1,7 @@
-<div *ngIf="displayAdminPanel; then thenBlock else elseBlock"></div>
+<div *ngIf="authservice.isLogged(); then thenBlock else elseBlock"></div>
 <ng-template #thenBlock>
   <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-    <a class="navbar-brand" href="#">GaBank - Admin Section</a>
+    <a class="navbar-brand" href="#">GaBank - Client Dashboard</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -11,15 +11,12 @@
           <a class="nav-link" routerLinkActive="active current" routerLink="/">Dashboard </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active current" routerLink="/contact">Client List</a>
+          <a class="nav-link" routerLinkActive="active current" routerLink="/reportissue">Report a issue</a>
         </li><li class="nav-item">
-          <a class="nav-link" routerLinkActive="active current" routerLink="/contact">Bills List</a>
+          <a class="nav-link" routerLinkActive="active current" routerLink="/bills">Bills List</a>
         </li>
-    <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active current" routerLink="/contact">News List</a>
-      </li>
         <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active current" routerLink="/login">Logout</a>
+          <a class="nav-link" (click)="authservice.logout()" routerLink="/logout">Logout</a>
         </li>
       </ul>
     </div>

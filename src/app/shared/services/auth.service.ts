@@ -1,17 +1,74 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import { JwtHelper } from 'angular2-jwt';
+import { GlobalConstants } from 'src/app/common/global-constants';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   flag:Boolean;
+  helper;
   
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private r:Router) {
+    this.helper= new JwtHelper();
     
    }
    
-  login(credentials)
+login(credentials)
+{
+  this.flag=false;
+  console.log("jestem w servisie");
+  console.log(credentials);
+  const body = { username: credentials.email, password: credentials.password };
+  return this.http.post<Auth>(GlobalConstants.apiURL+"/api/Token/accesstoken", body,{headers: new HttpHeaders({'Content-Type':  'application/json'})})
+  .map(resp=>
+    {
+      localStorage.setItem('accessToken',resp.accessToken);
+      localStorage.setItem('refreshToken',resp.refreshToken);
+      this.flag = true;
+      return true; 
+    });
+}
+
+logout()
+{
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    this.r.navigate(["/"]);
+}
+
+isLogged()
+{
+  
+  let atoken= localStorage.getItem('accessToken');
+  //trzeba zrobić obsluge refreshu tokenu!!!!!!!!
+  if(!atoken)
+    return false;
+
+  return this.helper.isTokenExpired(atoken)?false:true;
+
+}
+tryToRefreshToken()
+{
+  let rtoken=localStorage.getItem('refreshToken');
+  if(!rtoken) return false;
+  this.http.put<Auth>(GlobalConstants.apiURL+"/api/Token/accesstoken",null, {headers: new HttpHeaders({'Authorization':  ''})})
+  .subscribe(resp=>{
+    localStorage.setItem('accessToken',resp.accessToken);
+      localStorage.setItem('refreshToken',resp.refreshToken);
+  },err=>{
+    
+  });
+}
+
+}
+
+
+ /* login(credentials)
   {
     console.log("service");
     console.log(credentials);
@@ -21,22 +78,10 @@ export class AuthService {
     
 
     const body = { username: credentials.email, password: credentials.password };
-    this.http.post<any>('http://192.168.0.3:49166/accesstoken', body,{headers: new HttpHeaders({'Content-Type':  'application/json'})}).subscribe(
-      {
-      next: data => {
-        console.log(data);
-        localStorage.setItem('accessToken',data.accessToken);
-        localStorage.setItem('refreshToken',data.refreshToken);
-        this.flag = true;
-        
-        
-    },
-    error: error => {   
-      this.flag=false;
-  }}
-    );
-  return this.flag;
+    this.http.post<Auth>('http://192.168.0.3:49160/api/Token/accesstoken', body,{headers: new HttpHeaders({'Content-Type':  'application/json'})})
     
+  return this.flag;
+   */ 
       // return this.http.post('http://192.168.0.3:49155/accesstoken', 
       // JSON.stringify({username: credentials.email, password: credentials.password})).pipe( map(response => {
       //   console.log(response.json());
@@ -44,13 +89,13 @@ export class AuthService {
       //   localStorage.setItem('token',result.authorization);
       //   return true;
       // }));
-    }
+    //}
       
         
    
  
     
-  }
+  
 ////
 interface Auth
 {

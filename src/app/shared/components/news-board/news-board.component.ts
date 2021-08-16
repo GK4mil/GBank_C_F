@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Http, RequestOptions} from '@angular//http';
-import { Headers } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { GlobalConstants } from 'src/app/common/global-constants';
 
 @Component({
   selector: 'app-news-board',
@@ -9,12 +9,13 @@ import { Headers } from '@angular/http';
 })
 export class NewsBoardComponent implements OnInit {
 
-  posts :any [];
+  posts : Object [];
   firstheaders=new Headers({"Content-Type":"application/json"});
-  constructor(private http: Http)
+  constructor(private http: HttpClient)
   {
-    http.get('http://localhost:8082/api/news/show').subscribe(response=>{
-      this.posts=response.json();
+    http.get<{title:string, content:string, date: Date}>(GlobalConstants.apiURL+"/api/News/GetSomeCount?count=5").subscribe(response=>{
+      this.posts=(Object)(response);
+     // console.log(response);
       
     });
     

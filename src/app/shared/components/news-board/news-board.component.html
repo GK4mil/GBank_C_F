@@ -8,7 +8,7 @@
     <div class="card-body">
       <p class="card-title font-italic"><small>Publication date: {{item.date | date:'medium'}}</small></p>
       <p class="card-text ">{{ (item.content.length>100)? (item.content | slice:0:100)+'..':(item.content) }}</p>
-      <a href="#" class="btn btn-primary">More</a>
+      <a [routerLink]="['news',item.id]" class="btn btn-primary">More</a>
     </div>
   </div>
   </div>

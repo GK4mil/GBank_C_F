@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'bnavbar',
@@ -8,13 +9,10 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
-  displayAdminPanel=false;
-  constructor(private router: Router) { 
-    console.log(this.router.url);
-    if(this.router.url.includes("admin"))
-
-      this.displayAdminPanel=true;
+  displayClientPanel=false;
+  constructor(private router: Router, private authservice: AuthService) { 
   }
+   
 
   ngOnInit(): void {
   }

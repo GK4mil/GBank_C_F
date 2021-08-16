@@ -12,6 +12,7 @@ import { AuthService } from '../../services/auth.service';
 export class LoginComponent implements OnInit {
 
   wrongCredentials=false;
+  private stat:Boolean;
   
 
   constructor(
@@ -20,18 +21,20 @@ export class LoginComponent implements OnInit {
 
   tryToLogin(credentials)
   {
+    this.wrongCredentials=false;
+    this.authService.login(credentials).subscribe(
+        result=>
+        {
+          this.router.navigate(['db']);
+        }, error =>{
+          this.wrongCredentials=true;
+            console.log(error.message);
+        });
+        
     
+      
+      
     
-
-    if(this.authService.login(credentials))
-    {
-      this.router.navigate(["/admindashboard"]);
-    }
-    else
-    {
-      this.wrongCredentials=true;
-      console.log("zle dane");
-    }
   }
   
 
