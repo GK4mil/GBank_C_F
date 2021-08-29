@@ -11,7 +11,7 @@ export class ClientdashboardComponent implements OnInit {
 
   constructor(private as :AuthService, private r:Router) { 
     if(!as.isLogged())
-    r.navigate(["/"]);
+    r.navigate(["/login"]);
     
   }
 

@@ -2,27 +2,26 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import { JwtHelper } from 'angular2-jwt';
+import { JwtHelperService } from "@auth0/angular-jwt";
 import { GlobalConstants } from 'src/app/common/global-constants';
 import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   flag:Boolean;
-  helper;
+  helper:JwtHelperService;
   
   constructor(private http: HttpClient, private r:Router) {
-    this.helper= new JwtHelper();
+    this.helper=new JwtHelperService();
     
    }
    
 login(credentials)
 {
   this.flag=false;
-  console.log("jestem w servisie");
-  console.log(credentials);
   const body = { username: credentials.email, password: credentials.password };
   return this.http.post<Auth>(GlobalConstants.apiURL+"/api/Token/accesstoken", body,{headers: new HttpHeaders({'Content-Type':  'application/json'})})
   .map(resp=>
@@ -38,6 +37,7 @@ logout()
 {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    
     this.r.navigate(["/"]);
 }
 
