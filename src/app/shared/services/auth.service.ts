@@ -45,18 +45,41 @@ isLogged()
 {
   
   let atoken= localStorage.getItem('accessToken');
-  //trzeba zrobić obsluge refreshu tokenu!!!!!!!!
+
   if(!atoken)
     return false;
 
-  return this.helper.isTokenExpired(atoken)?false:true;
+    if(this.helper.isTokenExpired(atoken))
+    {
+     // let rtoken= localStorage.getItem('refreshToken');
+      //if(rtoken)
+      //{
+       // if(!this.helper.isTokenExpired(rtoken))
+         // this.tryToRefreshToken(); 
+       // else
+          return false;
+    //  }
+    //  else
+   //     return false;  
+   }
+  else
+    return true;
 
 }
 tryToRefreshToken()
 {
   let rtoken=localStorage.getItem('refreshToken');
   if(!rtoken) return false;
-  this.http.put<Auth>(GlobalConstants.apiURL+"/api/Token/accesstoken",null, {headers: new HttpHeaders({'Authorization':  ''})})
+  const headerDict = {
+    //   'Accept': 'application/json',
+       "Authorization":localStorage.getItem("refreshToken")
+     }
+     
+     const requestOptions = {                                                                                                                                                                                 
+       headers: new HttpHeaders(headerDict), 
+     };
+
+  this.http.put<Auth>(GlobalConstants.apiURL+"/api/Token/accesstoken",null, requestOptions)
   .subscribe(resp=>{
     localStorage.setItem('accessToken',resp.accessToken);
       localStorage.setItem('refreshToken',resp.refreshToken);

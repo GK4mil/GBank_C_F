@@ -10,12 +10,12 @@ import { GlobalConstants } from 'src/app/common/global-constants';
 export class NewsBoardComponent implements OnInit {
 
   posts : Object [];
-  firstheaders=new Headers({"Content-Type":"application/json"});
+  
   constructor(private http: HttpClient)
   {
     http.get<{title:string, content:string, date: Date}>(GlobalConstants.apiURL+"/api/News/GetSomeCount?count=5").subscribe(response=>{
       this.posts=(Object)(response);
-     // console.log(response);
+      console.log(response);
       
     });
     

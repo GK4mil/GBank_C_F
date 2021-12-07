@@ -1,16 +1,23 @@
 
-<div *ngFor="let item of posts">
-  
-  <div class="card w-90 col-centered">
-    <div class="card-header font-weight-bolder font-italic">
-      <h3>{{item.title}}</h3>
+<div *ngFor="let item of bills">
+  <div class="card w-90" style="margin: 2%; padding: 1%;">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Bill number: {{item.billNumber}} </h5>
+        </div>
+      </div>
     </div>
-    <div class="card-body">
-      <p class="card-title font-italic"><small>Publication date: {{item.date | date:'medium'}}</small></p>
-      <p class="card-text ">{{ (item.content.length>100)? (item.content | slice:0:100)+'..':(item.content) }}</p>
-      <a [routerLink]="['news',item.id]" class="btn btn-primary">More</a>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title d-inline-block" >Balance: {{ item.balance }}</h5>
+          <a [routerLink]="['/bills',item.billNumber]" class="btn btn-info d-inline-block" style="position: absolute; right: 3%;">Bill history</a>
+        </div>
+      </div>
     </div>
   </div>
+
   </div>
-
-
+  </div>
