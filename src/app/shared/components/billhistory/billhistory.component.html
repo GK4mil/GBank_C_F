@@ -15,12 +15,12 @@
               <div *ngIf="item.direction=='out'; else elseBlock">Engress</div>
               <ng-template #elseBlock><div>Ingress</div></ng-template>
               <h5 class="card-title d-inline-block" >Balance: {{ item.amount }}</h5>
-            <a [routerLink]="['/bills/',id, item.transactionid]" class="btn btn-info d-inline-block" style="position: absolute; right: 3%;">Details</a>
+            <a [routerLink]="['/transactiondetail',item.transactionid]" class="btn btn-info d-inline-block" style="position: absolute; right: 3%;">Details</a>
           </div>
         </div>
       </div>
     </div>
-    
+  
     </div>
     </div>
   

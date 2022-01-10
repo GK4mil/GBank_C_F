@@ -40,9 +40,9 @@ import { BillTransationDetailsComponent } from './components/billtransationdetai
       {path: 'login', component: LoginComponent},
       {path: 'db', component: ClientdashboardComponent, canActivate:[AuthGuard]},
       {path: 'transferform', component: TransferformComponent, canActivate:[AuthGuard]},   
-      {path: 'bills/:bill/:id', component: BillTransationDetailsComponent, canActivate:[AuthGuard]},
       {path: 'bills/:id', component: BillhistoryComponent, canActivate:[AuthGuard]},   
       {path: 'bills', component: BillsComponent, canActivate:[AuthGuard]},
+      {path: 'transactiondetail/:id', component: BillTransationDetailsComponent, canActivate:[AuthGuard]},
       {path: 'contact', component: ContactPageComponent},
       {path: 'news/:id', component: NewsDetailsComponent}, 
     ])

@@ -44,53 +44,46 @@ logout()
 async isLogged()
 {
   let atoken= localStorage.getItem('accessToken');
-    
-  if(atoken==null)
-  {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+
+  if(!atoken)
     return false;
   }
 
     if(this.helper.isTokenExpired(atoken))
     {
-      let rtoken= localStorage.getItem('refreshToken');
-      if(!(rtoken==null))
-      {
-        if(!this.helper.isTokenExpired(rtoken))
-        {
-          if(await this.tryToRefreshToken())
-            return true;
-          else
-          {
-            return false;
-          }
-        }
-           
-        else
-        {
-            return false;
-        }
-      }
-      else
-      {
-        return false;  
-      }
-    }
-    else
-    {
-      return true;
-    }
+     // let rtoken= localStorage.getItem('refreshToken');
+      //if(rtoken)
+      //{
+       // if(!this.helper.isTokenExpired(rtoken))
+         // this.tryToRefreshToken(); 
+       // else
+          return false;
+    //  }
+    //  else
+   //     return false;  
+   }
+  else
+    return true;
 
 }
 async tryToRefreshToken()
 {
   let rtoken=localStorage.getItem('refreshToken');
-   
-  if(rtoken==null) 
-  {
-    return false;
-  }
+  if(!rtoken) return false;
+  const headerDict = {
+    //   'Accept': 'application/json',
+       "Authorization":localStorage.getItem("refreshToken")
+     }
+     
+     const requestOptions = {                                                                                                                                                                                 
+       headers: new HttpHeaders(headerDict), 
+     };
+
+  this.http.put<Auth>(GlobalConstants.apiURL+"/api/Token/accesstoken",null, requestOptions)
+  .subscribe(resp=>{
+    localStorage.setItem('accessToken',resp.accessToken);
+      localStorage.setItem('refreshToken',resp.refreshToken);
+  },err=>{
     
     const headers = { 'Authorization': "Bearer "+rtoken };
     const body =null;
