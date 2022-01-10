@@ -1,0 +1,26 @@
+<div *ngFor="let item of historyrows">
+    <div class="card w-90" style="margin: 2%; padding: 1%;">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Date with time: </h5>
+            <h5 class="card-title">{{item?.datetime | date:'medium'}} </h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">            
+              <div *ngIf="item.direction=='out'; else elseBlock">Engress</div>
+              <ng-template #elseBlock><div>Ingress</div></ng-template>
+              <h5 class="card-title d-inline-block" >Balance: {{ item.amount }}</h5>
+            <a [routerLink]="['/bills/',id, item.transactionid]" class="btn btn-info d-inline-block" style="position: absolute; right: 3%;">Details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    </div>
+    </div>
+  

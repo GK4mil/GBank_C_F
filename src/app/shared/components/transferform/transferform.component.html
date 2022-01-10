@@ -1,0 +1,68 @@
+<div *ngIf="transferfault" class="alert alert-danger">Transfer command failed :/</div>
+<div *ngIf="transfersuccess" class="alert alert-success">Transfer command success :).</div>
+<form [formGroup]="transferForm" (ngSubmit)="onSubmit()">
+    
+  <div class="form-group row">
+   
+      <label class="col-sm-2 col-form-label">Account</label>
+   
+    <div class="col-sm-10">
+      <select formControlName="account" name="senderbill" class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+        <option *ngFor="let bill of clientbills" value="{{bill.billNumber}}">{{bill.billNumber}}</option>
+      </select>
+      <span *ngIf="!transferForm.get('account').valid && transferForm.get('account').touched" class="help-block"> 
+        Please enter a valid source bill!
+    </span>
+    </div>
+    
+  </div>
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-2 col-form-label" >Recipient bill number</label>
+      <div class="col-sm-10">
+        <input formControlName="recipientBillNumber" type="text" class="form-control" id="inputEmail3" name="receiver" placeholder="Recipient bill number">
+        <span *ngIf="!transferForm.get('recipientBillNumber').valid && transferForm.get('recipientBillNumber').touched" class="help-block"> 
+          Please enter a valid recipient bill!
+      </span>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-2 col-form-label">Recipient name</label>
+      <div class="col-sm-10">
+        <input formControlName="recipientName" name="recipientName" type="text" class="form-control" id="inputEmail3" placeholder="Recipient name">
+        <span *ngIf="!transferForm.get('recipientName').valid && transferForm.get('recipientName').touched" class="help-block"> 
+          Please enter a valid recipient name!
+      </span>
+      </div>
+  </div>
+    <div class="form-group row">
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Recipient address</label>
+        <div class="col-sm-10">
+          <input formControlName="recipientAddress" name="recipientAddress" type="text" class="form-control" id="inputEmail3" placeholder="Recipient address">
+          <span *ngIf="!transferForm.get('recipientAddress').valid && transferForm.get('recipientAddress').touched" class="help-block"> 
+            Please enter a valid recipient address!
+        </span>
+        </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputEmail3" class="col-sm-2 col-form-label">Title</label>
+      <div class="col-sm-10">
+        <input formControlName="title" name="title" type="text" class="form-control" id="inputEmail3" placeholder="Title">
+      </div>
+  </div>
+    <div class="form-group row">
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Amount</label>
+        <div class="col-sm-10">
+          <input formControlName="amount" type="text" class="form-control" id="inputEmail3" name="amount" placeholder="Amount to transfer">
+          <span *ngIf="!transferForm.get('amount').valid && transferForm.get('amount').touched" class="help-block"> 
+            Please enter a valid amount of money!
+        </span>
+        </div>
+    </div>
+   
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <button [disabled]="submitdisabled" type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+</form>
+ 

@@ -41,28 +41,75 @@ logout()
     this.r.navigate(["/"]);
 }
 
-isLogged()
+async isLogged()
 {
-  
   let atoken= localStorage.getItem('accessToken');
-  //trzeba zrobić obsluge refreshu tokenu!!!!!!!!
-  if(!atoken)
+    
+  if(atoken==null)
+  {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     return false;
+  }
 
-  return this.helper.isTokenExpired(atoken)?false:true;
+    if(this.helper.isTokenExpired(atoken))
+    {
+      let rtoken= localStorage.getItem('refreshToken');
+      if(!(rtoken==null))
+      {
+        if(!this.helper.isTokenExpired(rtoken))
+        {
+          if(await this.tryToRefreshToken())
+            return true;
+          else
+          {
+            return false;
+          }
+        }
+           
+        else
+        {
+            return false;
+        }
+      }
+      else
+      {
+        return false;  
+      }
+    }
+    else
+    {
+      return true;
+    }
 
 }
-tryToRefreshToken()
+async tryToRefreshToken()
 {
   let rtoken=localStorage.getItem('refreshToken');
-  if(!rtoken) return false;
-  this.http.put<Auth>(GlobalConstants.apiURL+"/api/Token/accesstoken",null, {headers: new HttpHeaders({'Authorization':  ''})})
-  .subscribe(resp=>{
-    localStorage.setItem('accessToken',resp.accessToken);
-      localStorage.setItem('refreshToken',resp.refreshToken);
-  },err=>{
+   
+  if(rtoken==null) 
+  {
+    return false;
+  }
     
-  });
+    const headers = { 'Authorization': "Bearer "+rtoken };
+    const body =null;
+    this.http.put<Auth>(GlobalConstants.apiURL+"/api/Token/accesstoken", body, { headers })
+        .subscribe(data => {
+          localStorage.setItem('accessToken',data.accessToken);
+          localStorage.setItem('refreshToken',data.refreshToken);
+          return true;
+        },
+        err =>
+        {
+            console.log(err);
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            return false;
+        });
+
+
+  
 }
 
 }
